@@ -36,6 +36,9 @@ public class ChatApplication extends Application {
 
 		stage.show();
 
+		ChatController controller = fxmlLoader.getController();
+		controller.setStageAndSetupListeners(stage);
+
 		return fxmlLoader;
 	}
 

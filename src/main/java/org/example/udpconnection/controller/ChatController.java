@@ -89,11 +89,11 @@ public class ChatController {
 			int destPort = Integer.parseInt(destinationPort.getText());
 			if (this.connection.isConnectionOpen()) {
 				this.connection.stopReceiving();
-				appendMessage("Connection closed in port " + destPort + ".\n");
+				appendMessage("Connection closed in port " + this.connection.getDestinationPort() + ".\n");
 			}
 			connection.setPorts(ip, srcPort, destPort);
 			connection.startReceiving();
-			messageArea.appendText("Connection established successfully!\n");
+			messageArea.appendText("Connection successfully established by port " + destPort + ".\n");
 		} catch (Exception e) {
 			messageArea.appendText("Establish connection failed: " + e.getMessage() + "\n");
 			messageArea.appendText("Please, try again\n");
