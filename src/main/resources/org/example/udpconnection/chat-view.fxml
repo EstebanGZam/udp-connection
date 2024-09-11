@@ -16,10 +16,11 @@
         <TextField fx:id="sourcePort"/>
         <Label text="Destination port:"/>
         <TextField fx:id="destinationPort"/>
+        <Button onAction="#handleEstablishConnection" text="Establish connection 🌐"/>
     </HBox>
     <TextArea fx:id="messageArea" editable="false" prefHeight="200.0"/>
     <HBox>
-        <TextField fx:id="messageInput" prefHeight="25.0" prefWidth="660.0"/>
-<!--        <Button onAction="#handleSendMessage" text="Send"/>-->
+        <TextField fx:id="messageInput" prefHeight="25.0" prefWidth="734.0"/>
+        <Button onAction="#handleSendMessage" prefHeight="25.0" prefWidth="84.0" text="📨"/>
     </HBox>
 </VBox>

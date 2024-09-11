@@ -1,8 +1,5 @@
 package org.example.udpconnection.util;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -34,7 +31,7 @@ public class Receiver extends Thread {
 				String message = new String(packet.getData()).trim();
 //				System.out.println("Received> " + message);
 				// Agrega el mensaje recibido al área de mensajes
-				messageArea.appendText("Them: " + message + "\n");
+//				messageArea.appendText("Them: " + message + "\n");
 			} catch (SocketException e) {
 				if (stop) {
 					System.out.println("Socket closed, stopping thread.");

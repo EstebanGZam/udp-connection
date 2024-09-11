@@ -2,32 +2,38 @@ package org.example.udpconnection;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.scene.Parent;
 import org.example.udpconnection.controller.ChatController;
+
+import java.io.IOException;
 
 public class ChatApplication extends Application {
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
-		// Cargar la interfaz desde el archivo FXML
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/org/example/udpconnection/chat-view.fxml"));
-		Parent root = loader.load();
-
-		// Obtener el controlador
+	public void start(Stage stage) throws IOException {
+		FXMLLoader loader = renderView("chat-view.fxml");
 		ChatController controller = loader.getController();
+	}
 
-		// Iniciar el socket para recibir mensajes
-		controller.startConnection();
+	public static FXMLLoader renderView(String fxml) throws IOException {
+		FXMLLoader fxmlLoader;
+		fxmlLoader = new FXMLLoader(
+				ChatApplication.class.getResource(fxml)
+		);
 
-		// Crear y mostrar la ventana
-		primaryStage.setTitle("Chat");
-		primaryStage.setScene(new Scene(root));
-		primaryStage.show();
+		Parent parent = fxmlLoader.load();
+		Scene scene = new Scene(parent);
+		Stage stage = new Stage();
+		stage.setTitle("Chat");
+		stage.setScene(scene);
+		stage.show();
+
+		return fxmlLoader;
 	}
 
 	public static void main(String[] args) {
-		launch(args);
+		launch();
 	}
 }

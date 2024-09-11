@@ -9,9 +9,6 @@ public class UDPConnection {
 	private int destinationPort;
 	private String destinationIP;
 
-	//	Scanner scanner = new Scanner(System.in);
-
-
 	public static UDPConnection getInstance() {
 		if (instance == null) {
 			instance = new UDPConnection();
@@ -25,27 +22,14 @@ public class UDPConnection {
 		this.destinationIP = destinationIP;
 	}
 
-	public synchronized void startConnection() {
-		try {
-			boolean exit = false;
-			Receiver receiver = Receiver.getInstance();
-			receiver.setPort(this.socket);
+	public synchronized void startReceiving() throws SocketException {
+		Receiver receiver = Receiver.getInstance();
+		receiver.setPort(this.socket);
+		receiver.start();
+	}
 
-			receiver.start();
-
-			while (!exit) {
-				Sender sender = new Sender(this.socket, this.destinationIP, this.destinationPort);
-				String message = "???";
-				exit = message.equalsIgnoreCase("exit");
-				if (exit) {
-					receiver.setStop(true);
-					receiver.getSocket().close();
-				} else {
-					sender.sendMessage(message);
-				}
-			}
-		} catch (IOException e) {
-			throw new RuntimeException(e);
-		}
+	public void sendMessage(String message) throws IOException {
+		Sender sender = new Sender(this.socket, this.destinationIP, this.destinationPort);
+		sender.sendMessage(message);
 	}
 }

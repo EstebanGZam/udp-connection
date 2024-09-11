@@ -1,8 +1,5 @@
 package org.example.udpconnection.util;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.TextArea;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -21,7 +18,6 @@ public class Sender {
 	}
 
 	public void sendMessage(String message) throws IOException {
-		messageArea.appendText("You: " + message + "\n");
 		sendDatagram(message, this.destinationAddress, this.destinationPort);
 	}
 
