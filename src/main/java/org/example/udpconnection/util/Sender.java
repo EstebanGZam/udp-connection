@@ -5,6 +5,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 public class Sender {
 	private final DatagramSocket socket;
@@ -22,7 +23,7 @@ public class Sender {
 	}
 
 	private void sendDatagram(String message, InetAddress destinationAddress, int destinationPort) throws IOException {
-		DatagramPacket packet = new DatagramPacket(message.getBytes(), message.length(), destinationAddress, destinationPort);
+		DatagramPacket packet = new DatagramPacket(message.getBytes(StandardCharsets.UTF_8), message.length(), destinationAddress, destinationPort);
 
 		socket.send(packet);
 	}

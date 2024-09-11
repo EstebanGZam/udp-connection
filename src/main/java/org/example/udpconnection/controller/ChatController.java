@@ -1,9 +1,13 @@
 package org.example.udpconnection.controller;
 
+import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.stage.Stage;
+import javafx.stage.WindowEvent;
 import org.example.udpconnection.util.UDPConnection;
 
 import java.io.IOException;
@@ -28,6 +32,9 @@ public class ChatController {
 	@FXML
 	private TextArea messageArea; // Área de mensajes recibidos
 
+	@FXML
+	private Button sendButton; // Botón de enviar
+
 	public static ChatController getInstance() {
 		return instance;
 	}
@@ -41,17 +48,36 @@ public class ChatController {
 		messageArea.appendText(message + "\n");
 	}
 
+	public void initialize() {
+		messageInput.setOnAction(_ -> handleSendMessage(null));
+
+		sendButton.setOnAction(this::handleSendMessage);
+	}
+
+	// Método para cerrar todo cuando la ventana se cierra
+	public void setStageAndSetupListeners(Stage stage) {
+		stage.setOnCloseRequest((WindowEvent _) -> handleWindowClose());
+	}
+
+	private void handleWindowClose() {
+		// Llamar al método que cierra todos los recursos y mata los hilos
+		connection.stopReceiving();
+		// Finalmente, cerrar la aplicación JavaFX
+		Platform.exit();
+	}
+
+
 	public void handleSendMessage(ActionEvent actionEvent) {
 		try {
 			String message = "";
 			while (message.isEmpty()) {
 				message = messageInput.getText();
 			}
-			connection.sendMessage(message);
+			connection.sendMessage(System.getProperty("user.name") + ": " + message);
 			messageArea.appendText("You: " + message + "\n");
 			messageInput.clear();
 		} catch (IOException e) {
-			messageArea.appendText(e.getMessage() + "\n");
+			appendMessage(e.getMessage());
 		}
 	}
 
@@ -61,6 +87,10 @@ public class ChatController {
 			String ip = destinationIP.getText();
 			int srcPort = Integer.parseInt(sourcePort.getText());
 			int destPort = Integer.parseInt(destinationPort.getText());
+			if (this.connection.isConnectionOpen()) {
+				this.connection.stopReceiving();
+				appendMessage("Connection closed in port " + destPort + ".\n");
+			}
 			connection.setPorts(ip, srcPort, destPort);
 			connection.startReceiving();
 			messageArea.appendText("Connection established successfully!\n");
