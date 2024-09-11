@@ -9,6 +9,8 @@ import org.example.udpconnection.util.UDPConnection;
 import java.io.IOException;
 
 public class ChatController {
+	private static ChatController instance;
+
 	private final UDPConnection connection = UDPConnection.getInstance();
 
 	@FXML
@@ -25,6 +27,19 @@ public class ChatController {
 
 	@FXML
 	private TextArea messageArea; // Área de mensajes recibidos
+
+	public static ChatController getInstance() {
+		return instance;
+	}
+
+	public ChatController() {
+		instance = this; // Esto permite obtener la instancia desde otras clases
+	}
+
+	// Método para agregar el mensaje recibido al área de texto
+	public void appendMessage(String message) {
+		messageArea.appendText(message + "\n");
+	}
 
 	public void handleSendMessage(ActionEvent actionEvent) {
 		try {

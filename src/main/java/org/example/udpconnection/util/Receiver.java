@@ -5,6 +5,10 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
 
+import javafx.application.Platform;
+import org.example.udpconnection.controller.ChatController;
+
+
 public class Receiver extends Thread {
 	private DatagramSocket socket;
 	private static Receiver instance;
@@ -29,9 +33,14 @@ public class Receiver extends Thread {
 				this.socket.receive(packet);
 
 				String message = new String(packet.getData()).trim();
-//				System.out.println("Received> " + message);
-				// Agrega el mensaje recibido al área de mensajes
-//				messageArea.appendText("Them: " + message + "\n");
+
+				// Procesar el mensaje en el hilo de la UI utilizando Platform.runLater()
+				Platform.runLater(() -> {
+					// Aquí llamas a un método del controlador para procesar el mensaje
+					// Supongamos que el controlador tiene un método para agregar el mensaje al área de texto
+					ChatController.getInstance().appendMessage("Them: " + message);
+				});
+
 			} catch (SocketException e) {
 				if (stop) {
 					System.out.println("Socket closed, stopping thread.");
