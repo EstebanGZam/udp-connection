@@ -61,4 +61,8 @@ public class UDPConnection {
 		this.receiver.getSocket().close();
 		this.receiver.interrupt();
 	}
+
+	public int getDestinationPort() {
+		return this.destinationPort;
+	}
 }
