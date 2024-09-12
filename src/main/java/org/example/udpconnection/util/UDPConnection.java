@@ -10,7 +10,6 @@ public class UDPConnection {
 	private String destinationIP;
 	private Receiver receiver;
 
-
 	public static UDPConnection getInstance() {
 		if (instance == null) {
 			instance = new UDPConnection();
@@ -37,7 +36,6 @@ public class UDPConnection {
 
 	// Empezar la recepción de mensajes
 	public synchronized void startReceiving() {
-		System.out.println(this.receiver);
 		this.receiver = new Receiver();
 		this.receiver.setPort(this.socket);
 		this.receiver.start();
@@ -63,9 +61,4 @@ public class UDPConnection {
 		this.receiver.getSocket().close();
 		this.receiver.interrupt();
 	}
-
-	public int getDestinationPort() {
-		return destinationPort;
-	}
-
 }
